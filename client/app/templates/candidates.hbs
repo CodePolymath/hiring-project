@@ -3,13 +3,52 @@
 
 <h1>Listing candidates</h1>
 
-{{#each model as |applicant|}}
-<div>
-  <h2>{{applicant.name}}</h2>
-  <p>Age: {{applicant.name}}</p>
+<div class="btn-fixed-top">
+  <button type="button" id="btn-add" {{on 'click' this.addNew}} >Add New</button>
+  <span class="status-message{{if this.statusMessage " slide-in"}}">{{this.statusMessage}}</span>
 </div>
+
+{{#each this.model as |applicant|}}
+  <div>
+    <h2>{{applicant.name}}</h2>
+    <p>Age: {{applicant.age}}</p>
+  </div>
 {{else}}
-<div>No records found</div>
+  <div>No records found</div>
 {{/each}}
 
-<button {{on 'click' (action 'addNew')}} >Add new</button>
+{{#if this.showCandidateForm}}
+  <ModalDialog
+    @clickOutsideToClose=true
+    @hasOverlay=true
+    @translucentOverlay=true
+    @onClose={{this.cancelModal}}
+  >
+    <div class="modal-header" {{did-insert this.dialogOpened}}>
+      <h2>Add New Candidate</h2>
+    </div>
+    <div class="modal-body">
+      <Input
+        id="input-name"
+        @placeholder="Candidate Name"
+        @value={{this.candidateName}}
+        submitonenter="true"
+        {{on "keydown" this.handleKeypress}}
+      />
+     <span class="required" title="Name is required">*</span>
+      <Input
+        placeholder="Age"
+        @value={{this.candidateAge}}
+        limitnumbers="true"
+        maxlength="3"
+        submitonenter="true"
+        {{on "keydown" this.handleKeypress}}
+      />
+     <span class="required" title="Age is required">*</span>
+    </div>
+    <div class="modal-footer">
+      <button type="button" {{on 'click' this.saveForm}}>Save</button>
+      <button type="button" {{on 'click' this.cancelModal}}>Cancel</button>
+    </div>
+  </ModalDialog>
+{{/if}}

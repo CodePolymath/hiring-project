@@ -1,0 +1,42 @@
+@import "ember-modal-dialog/ember-modal-structure.css";
+@import "ember-modal-dialog/ember-modal-appearance.css";
+
+* {
+  font-family: "Roboto", sans-serif, arial;
+}
+
+body {
+  padding: 5px 10px;
+}
+
+.btn-fixed-top {
+  position: fixed;
+  top: 5px;
+  left: 20%;
+  width: 70%;
+  padding: 3px;
+  overflow-y: hidden;
+}
+
+.status-message {
+  position: absolute;
+  top: -30px;
+  white-space: nowrap;
+  color: #00aa33;
+  padding: 2px 0 0 10px;
+  transition: top .3s;
+}
+
+.status-message.slide-in {
+  top: 3px;
+}
+
+.required {
+  color: #ee0000;
+  cursor: default;
+}
+
+.modal-footer {
+  text-align: right;
+  padding: 20px 10px 10px 20px;
+}

@@ -4,6 +4,7 @@ use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as PdoMysql;
+use Phalcon\Http\Response;
 
 $loader = new Loader();
 $loader->registerNamespaces(
@@ -68,6 +69,56 @@ $app->get(
 
     header('Content-type: application/vnd.api+json'); // JSON API
     echo json_encode(['data' => $data]);
+  }
+);
+
+$app->post(
+  '/api/applicants',
+  function () use ($app) {
+    $candidate = $app->request->getJsonRawBody();
+
+    $phql = "INSERT INTO App\Models\Candidates (name, age) VALUES (:name:, :age:)";
+
+    $status = $app
+      ->modelsManager
+      ->executeQuery(
+        $phql,
+        [
+          'name' => $candidate->data->attributes->name,
+          'age' => $candidate->data->attributes->age,
+        ]
+      );
+
+    $response = new Response();
+
+    if ($status->success() === true) {
+      $response->setStatusCode(201, 'Created');
+
+      $candidate->id = $status->getModel()->id;
+
+      $response->setJsonContent(
+        [
+          'status' => 'OK',
+          'data'   => $candidate->data,
+        ]
+      );
+    } else {
+      $response->setStatusCode(409, 'Conflict');
+
+      $errors = [];
+      foreach ($status->getMessages() as $message) {
+        $errors[] = $message->getMessage();
+      }
+
+      $response->setJsonContent(
+        [
+          'status'   => 'ERROR',
+          'messages' => $errors,
+        ]
+      );
+    }
+
+    return $response;
   }
 );
 

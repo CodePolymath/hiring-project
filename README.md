@@ -43,17 +43,23 @@ npm start
 
 You will be able to see the app running in the browser with http://localhost:4200/
 
-# HOMEWORK
+# Chris' Updates
 
-What you need to do, is implement the add new candidate from the front end and backend.
-
-Hints:
-
-from the front end, you need to create a form with name and age using the built in components
-https://guides.emberjs.com/release/components/built-in-components/
-
-from the @action defined in app/controllers/candidates.js you can use the variables to create
-a new applicant record using this.store.createRecord and then save it.
-
-On the back end, you need to implement `$app->post('/api/applicants', function () use ($app) {});` that will receive the data
-in json:api format 
+- implemented php POST function
+- removed misc .gitkeep files
+- added Roboto Google font
+- added **ember-modal-dialog** for input form
+- added **render-modifiers** for did-insert functionality
+- implemented **createRecord** and **.save()** to the **applicant** model via **ember-data**
+- implemented a11y enhancements
+  - return focus to previous button on modal close
+  - tab trapping in modal
+  - ESC closes modal
+  - ENTER in text inputs saves modal
+  - click outside modal closes modal
+- limited age input to numbers; 3 chars max
+- required name and age
+- added basic styling
+- added missing semicolon to candidates route; applicant model
+- added missing this. context to candidates template
+- update action addNew to **this.addNew** in candidates template
